@@ -7,7 +7,7 @@ vals = vector('list', 4)
 names(vals) = c('cov.2', 'cov.5', 'cov.8', 'cov.9')
 for(i in  1:4){
   vals[[i]] = vector('list', 6)
-  names(vals[[i]]) = c('x_reg_coef', 'z_reg_coef', 'coef_mat', 'x_reg_se', 'z_reg_se', 'se_mat')
+  names(vals[[i]]) = c('x_reg_coef', 'z_reg_coef', 'coef_mat', 'x_reg_var', 'z_reg_var', 'var_mat')
 }
 
 ## looping over covariance values
@@ -30,20 +30,20 @@ for(i in 1:4){
   ssr = sum(resids^2)
   
   print(summary(lm(y~x+z))$coef)
-  ## storing coef and se values from regression output
+  ## storing coef and var values from regression output
   x_reg_coef = summary(lm(y~x+z))$coef[2]
   z_reg_coef = summary(lm(y~x+z))$coef[3]
-  x_reg_se = (summary(lm(y~x+z))$coef[5])^2
-  z_reg_se = (summary(lm(y~x+z))$coef[6])^2
+  x_reg_var = (summary(lm(y~x+z))$coef[5])^2
+  z_reg_var = (summary(lm(y~x+z))$coef[6])^2
   
-  # calculating coef and se matrices manually
+  # calculating coef and var matrices manually
   X = cbind(ones, x,z)
   coef_mat = solve(t(X)%*%X)%*%(t(X)%*%(y))
   #z_mat_coef = (solve(t(z)%*%z))*(t(z)%*%(y-(x*x_reg_coef)))
-  se_mat = (solve(t(X)%*%X)*(ssr/97))
-   #z_mat_se = ((solve(t(z)%*%z))*(ssr/97))^(0.5)
+  var_mat = (solve(t(X)%*%X)*(ssr/97))
+   #z_mat_var = ((solve(t(z)%*%z))*(ssr/97))^(0.5)
   
-  # storing all coef and se values in the vals list
+  # storing all coef and var values in the vals list
   for(j in 1:6){
-  vals[[i]][[j]] = list(x_reg_coef, z_reg_coef, coef_mat, x_reg_se, z_reg_se, se_mat)[[j]]}
+  vals[[i]][[j]] = list(x_reg_coef, z_reg_coef, coef_mat, x_reg_var, z_reg_var, var_mat)[[j]]}
 }
