@@ -19,6 +19,7 @@ for(i in 1:4){
   data<-rmvnorm(100,sigma =smat)
   x<-data[,1]
   z<-data[,2]
+  ones = rep(1,100)
   y<-2+x+z+rnorm(n=100)
   
   #checking covariance between x and z 
@@ -36,7 +37,7 @@ for(i in 1:4){
   z_reg_se = (summary(lm(y~x+z))$coef[6])^2
   
   # calculating coef and se matrices manually
-  X = cbind(x,z)
+  X = cbind(ones, x,z)
   coef_mat = solve(t(X)%*%X)%*%(t(X)%*%(y))
   #z_mat_coef = (solve(t(z)%*%z))*(t(z)%*%(y-(x*x_reg_coef)))
   se_mat = (solve(t(X)%*%X)*(ssr/97))
