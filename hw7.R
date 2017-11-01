@@ -48,7 +48,7 @@ coeftest(mod3)
 coeftest(mod3, vcov=hccm)
 
 ## WLS:
-wmod3 = lm(y3~x, weights = x^2)
+wmod3 = lm(y3~x, weights = 1/x^2)
 summary(wmod3)
 summary(mod3)
 
